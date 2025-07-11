@@ -40,11 +40,6 @@ func (h *TaskHandlers) GetHandler(c echo.Context) error {
 
 func (h *TaskHandlers) UpdateHandler(c echo.Context) error {
 
-	_, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid Request id"})
-	}
-
 	var task taskService.Task
 	if err := c.Bind(&task); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid Request"})
