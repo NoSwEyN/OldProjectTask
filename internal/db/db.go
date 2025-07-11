@@ -1,0 +1,27 @@
+package db
+
+import (
+	"ModTask/internal/taskService"
+	"log"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+)
+
+var db *gorm.DB
+
+func InitDB() (*gorm.DB, error) {
+	dsn := "host=localhost user=postgres password=7ab816zAd dbname=postgres port=15432 sslmode=disable"
+
+	var err error
+
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("Could not gorm: %v", err)
+	}
+
+	if err := db.AutoMigrate(&taskService.Task{}); err != nil {
+		log.Fatalf("Could not migrate: %v", err)
+	}
+	return db, nil
+}
