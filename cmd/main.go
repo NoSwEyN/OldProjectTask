@@ -27,7 +27,7 @@ func main() {
 
 	e.POST("/tasks", taskHandler.CreateHandler)
 	e.GET("/tasks", taskHandler.GetHandler)
-	e.PATCH("/tasks/:id", taskHandler.UpdateHandler)
+	e.PUT("/tasks/:id", taskHandler.UpdateHandler)
 	e.DELETE("/tasks/:id", taskHandler.DeleteHandler)
 
 	e.Start("localhost:8080")

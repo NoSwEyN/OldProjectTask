@@ -40,7 +40,7 @@ func (h *TaskHandlers) GetHandler(c echo.Context) error {
 
 func (h *TaskHandlers) UpdateHandler(c echo.Context) error {
 
-	id, err := strconv.Atoi(c.Param("id"))
+	_, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid Request id"})
 	}
@@ -50,7 +50,7 @@ func (h *TaskHandlers) UpdateHandler(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid Request"})
 	}
 
-	update, err := h.service.UpdateService(id, task.Task)
+	update, err := h.service.UpdateService(task)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Service ERROR"})
 	}

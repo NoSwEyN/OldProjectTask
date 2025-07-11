@@ -6,7 +6,7 @@ type TaskRepository interface {
 	PostRepository(task Task) (Task, error)
 	GetAllRepository() ([]Task, error)
 	GetRepositoryID(id int) (Task, error)
-	UpdateRepository(task Task, update string) (Task, error)
+	UpdateRepository(task Task) (Task, error)
 	DeleteRepository(id int) error
 }
 
@@ -35,10 +35,10 @@ func (r *taskRepository) GetRepositoryID(id int) (Task, error) {
 	return task, err
 }
 
-func (r *taskRepository) UpdateRepository(task Task, update string) (Task, error) {
-	task.Task = update
+func (r *taskRepository) UpdateRepository(task Task) (Task, error) {
+	var update Task
 	err := r.db.Save(&task).Error
-	return task, err
+	return update, err
 }
 
 func (r *taskRepository) DeleteRepository(id int) error {

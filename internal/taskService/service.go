@@ -4,7 +4,7 @@ type TaskService interface {
 	PostService(task string) (Task, error)
 	GetAllService() ([]Task, error)
 	GetServiceID(id int) (Task, error)
-	UpdateService(id int, update string) (Task, error)
+	UpdateService(task Task) (Task, error)
 	DeleteService(id int) error
 }
 
@@ -29,12 +29,8 @@ func (s *taskService) GetServiceID(id int) (Task, error) {
 	return s.repo.GetRepositoryID(id)
 }
 
-func (s *taskService) UpdateService(id int, update string) (Task, error) {
-	task, err := s.repo.GetRepositoryID(id)
-	if err != nil {
-		return Task{}, err
-	}
-	return s.repo.UpdateRepository(task, update)
+func (s *taskService) UpdateService(task Task) (Task, error) {
+	return s.repo.UpdateRepository(task)
 }
 
 func (s *taskService) DeleteService(id int) error {
