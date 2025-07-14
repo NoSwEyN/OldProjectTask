@@ -36,9 +36,8 @@ func (r *taskRepository) GetRepositoryID(id int) (Task, error) {
 }
 
 func (r *taskRepository) UpdateRepository(task Task) (Task, error) {
-	var update Task
 	err := r.db.Save(&task).Error
-	return update, err
+	return task, err
 }
 
 func (r *taskRepository) DeleteRepository(id int) error {
