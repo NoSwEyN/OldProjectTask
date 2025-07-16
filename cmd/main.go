@@ -11,12 +11,12 @@ import (
 )
 
 func main() {
-	datebase, err := db.InitDB()
+	database, err := db.InitDB()
 	if err != nil {
 		log.Fatalf("Could not to database: %v", err)
 	}
 
-	taskRepo := taskService.NewTaskRepository(datebase)
+	taskRepo := taskService.NewTaskRepository(database)
 	taskService := taskService.NewTaskService(taskRepo)
 	taskHandler := handlers.NewTaskHandlers(taskService)
 

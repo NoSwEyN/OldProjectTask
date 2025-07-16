@@ -24,9 +24,9 @@ func (r *taskRepository) PostRepository(task Task) (Task, error) {
 }
 
 func (r *taskRepository) GetAllRepository() ([]Task, error) {
-	var task []Task
-	err := r.db.Find(&task).Error
-	return task, err
+	var tasks []Task
+	err := r.db.Find(&tasks).Error
+	return tasks, err
 }
 
 func (r *taskRepository) GetRepositoryID(id int) (Task, error) {
