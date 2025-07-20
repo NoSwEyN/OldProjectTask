@@ -86,5 +86,5 @@ func (h *TaskHandlers) DeleteTasksId(ctx context.Context, request tasks.DeleteTa
 	if err := h.service.DeleteService(id); err != nil {
 		return nil, err
 	}
-	return tasks.DeleteTasksId300JSONResponse{}, nil
+	return tasks.DeleteTasksId204JSONResponse{}, nil
 }

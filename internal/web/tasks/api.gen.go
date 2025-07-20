@@ -173,11 +173,11 @@ type DeleteTasksIdResponseObject interface {
 	VisitDeleteTasksIdResponse(w http.ResponseWriter) error
 }
 
-type DeleteTasksId300JSONResponse Task
+type DeleteTasksId204JSONResponse Task
 
-func (response DeleteTasksId300JSONResponse) VisitDeleteTasksIdResponse(w http.ResponseWriter) error {
+func (response DeleteTasksId204JSONResponse) VisitDeleteTasksIdResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(300)
+	w.WriteHeader(204)
 
 	return json.NewEncoder(w).Encode(response)
 }
