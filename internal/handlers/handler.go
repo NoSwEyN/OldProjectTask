@@ -74,6 +74,7 @@ func (h *TaskHandlers) PutTasksId(_ context.Context, request tasks.PutTasksIdReq
 	}
 
 	res := tasks.PutTasksId200JSONResponse{
+		Id:   &id,
 		Task: &update.Task,
 	}
 	return res, nil

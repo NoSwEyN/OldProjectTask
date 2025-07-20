@@ -70,7 +70,7 @@ paths:
           schema:
             type: integer
       responses:
-        '300':
+        '204':
           description: Task deleted
           content:
             application/json:
