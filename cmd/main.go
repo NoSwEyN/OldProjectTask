@@ -4,10 +4,11 @@ import (
 	"ModTask/internal/db"
 	"ModTask/internal/handlers"
 	"ModTask/internal/taskService"
+	"ModTask/internal/web/tasks"
 	"log"
 
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
@@ -25,10 +26,10 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	e.POST("/tasks", taskHandler.CreateHandler)
-	e.GET("/tasks", taskHandler.GetHandler)
-	e.PUT("/tasks/:id", taskHandler.UpdateHandler)
-	e.DELETE("/tasks/:id", taskHandler.DeleteHandler)
+	strictHandler := tasks.NewStrictHandler(taskHandler, nil)
+	tasks.RegisterHandlers(e, strictHandler)
 
-	e.Start("localhost:8080")
+	if err := e.Start(":8080"); err != nil {
+		log.Fatalf("filed to start with err :%v", err)
+	}
 }
