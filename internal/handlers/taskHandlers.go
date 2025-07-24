@@ -4,6 +4,7 @@ import (
 	"ModTask/internal/taskService"
 	"ModTask/internal/web/tasks"
 	"context"
+	"fmt"
 )
 
 type TaskHandlers struct {
@@ -14,7 +15,7 @@ func NewTaskHandlers(s taskService.TaskService) *TaskHandlers {
 	return &TaskHandlers{service: s}
 }
 
-func (h *TaskHandlers) GetTasks(_ context.Context, _ tasks.GetTasksRequestObject) (tasks.GetTasksResponseObject, error) {
+func (h *TaskHandlers) GetTasks(_ context.Context, request tasks.GetTasksRequestObject) (tasks.GetTasksResponseObject, error) {
 	allTasks, err := h.service.GetAllService()
 	if err != nil {
 		return nil, err
@@ -35,6 +36,14 @@ func (h *TaskHandlers) GetTasks(_ context.Context, _ tasks.GetTasksRequestObject
 
 func (h *TaskHandlers) PostTasks(_ context.Context, request tasks.PostTasksRequestObject) (tasks.PostTasksResponseObject, error) {
 	taskRequest := request.Body
+
+	if taskRequest == nil {
+		return nil, fmt.Errorf("request body is required")
+	}
+
+	if taskRequest.Task == nil {
+		return nil, fmt.Errorf("email is required")
+	}
 
 	taskToCreate := taskService.Task{
 		Task: *taskRequest.Task,
@@ -80,7 +89,7 @@ func (h *TaskHandlers) PutTasksId(_ context.Context, request tasks.PutTasksIdReq
 	return res, nil
 }
 
-func (h *TaskHandlers) DeleteTasksId(ctx context.Context, request tasks.DeleteTasksIdRequestObject) (tasks.DeleteTasksIdResponseObject, error) {
+func (h *TaskHandlers) DeleteTasksId(_ context.Context, request tasks.DeleteTasksIdRequestObject) (tasks.DeleteTasksIdResponseObject, error) {
 	id := request.Id
 
 	if err := h.service.DeleteService(id); err != nil {

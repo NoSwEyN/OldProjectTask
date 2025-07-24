@@ -14,7 +14,7 @@ func InitDB() (*gorm.DB, error) {
 
 	var err error
 
-	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Could not gorm: %v", err)
 	}
