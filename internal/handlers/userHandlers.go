@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"ModTask/internal/taskService"
 	"ModTask/internal/userService"
 	"ModTask/internal/web/users"
 	"context"
@@ -30,7 +31,7 @@ func (h *UserHandlers) PostUsers(_ context.Context, request users.PostUsersReque
 		return nil, fmt.Errorf("password is required")
 	}
 
-	userToCreate := userService.User{
+	userToCreate := taskService.User{
 		Email:    *usersRequest.Email,
 		Password: *usersRequest.Password,
 	}
@@ -105,4 +106,27 @@ func (h *UserHandlers) DeleteUsersId(_ context.Context, request users.DeleteUser
 		return nil, err
 	}
 	return users.DeleteUsersId204JSONResponse{}, nil
+}
+
+func (h *UserHandlers) GetUsersIdTasks(_ context.Context, request users.GetUsersIdTasksRequestObject) (users.GetUsersIdTasksResponseObject, error) {
+	id := request.Id
+
+	user, err := h.service.GetAllUsersIdService(id)
+	if err != nil {
+		return nil, err
+	}
+
+	var tasks []users.Task
+	for _, t := range user.Tasks {
+		id := t.ID
+		taskName := t.Task
+		userID := t.UserID
+		tasks = append(tasks, users.Task{
+			Id:     &id,
+			Task:   &taskName,
+			UserId: &userID,
+		})
+	}
+
+	return users.GetUsersIdTasks200JSONResponse(tasks), nil
 }

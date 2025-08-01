@@ -1,7 +1,7 @@
 package taskService
 
 type TaskService interface {
-	PostService(task string) (Task, error)
+	PostService(task string, userID int) (Task, error)
 	GetAllService() ([]Task, error)
 	GetServiceID(id int) (Task, error)
 	UpdateService(id int, task Task) (Task, error)
@@ -16,9 +16,12 @@ func NewTaskService(r TaskRepository) TaskService {
 	return &taskService{repo: r}
 }
 
-func (s *taskService) PostService(task string) (Task, error) {
-	newTask := Task{Task: task}
-	return s.repo.PostRepository(newTask)
+func (s *taskService) PostService(task string, userID int) (Task, error) {
+	newTask := Task{
+		Task:   task,
+		UserID: userID,
+	}
+	return s.repo.PostRepository(newTask, userID)
 }
 
 func (s *taskService) GetAllService() ([]Task, error) {

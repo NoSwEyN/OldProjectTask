@@ -25,8 +25,9 @@ func (h *TaskHandlers) GetTasks(_ context.Context, request tasks.GetTasksRequest
 
 	for _, tsk := range allTasks {
 		task := tasks.Task{
-			Id:   &tsk.ID,
-			Task: &tsk.Task,
+			Id:     &tsk.ID,
+			Task:   &tsk.Task,
+			UserId: &tsk.UserID,
 		}
 		response = append(response, task)
 	}
@@ -37,26 +38,24 @@ func (h *TaskHandlers) GetTasks(_ context.Context, request tasks.GetTasksRequest
 func (h *TaskHandlers) PostTasks(_ context.Context, request tasks.PostTasksRequestObject) (tasks.PostTasksResponseObject, error) {
 	taskRequest := request.Body
 
-	if taskRequest == nil {
-		return nil, fmt.Errorf("request body is required")
-	}
-
-	if taskRequest.Task == nil {
-		return nil, fmt.Errorf("email is required")
+	if taskRequest == nil || taskRequest.Task == nil || taskRequest.UserId == nil {
+		return nil, fmt.Errorf("task and user_id are required")
 	}
 
 	taskToCreate := taskService.Task{
-		Task: *taskRequest.Task,
+		Task:   *taskRequest.Task,
+		UserID: *taskRequest.UserId,
 	}
-	createdTask, err := h.service.PostService(taskToCreate.Task)
+	createdTask, err := h.service.PostService(taskToCreate.Task, *taskRequest.UserId)
 
 	if err != nil {
 		return nil, err
 	}
 
 	response := tasks.PostTasks201JSONResponse{
-		Id:   &createdTask.ID,
-		Task: &createdTask.Task,
+		Id:     &createdTask.ID,
+		Task:   &createdTask.Task,
+		UserId: &createdTask.UserID,
 	}
 	return response, nil
 }

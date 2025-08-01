@@ -149,23 +149,65 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+  /users/{id}/tasks:
+    get:
+      tags:
+        - users
+      summary: Get all task user_id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
 components:
   schemas:
+    CreateTaskRequest:
+      type: object
+      required:
+        - task
+      properties:
+        task:
+          type: string
     Task:
       type: object
       properties:
         id:
           type: integer
-          format: int
         task:
           type: string
+        user_id:
+          type: integer
     User:
       type: object
       properties:
         id:
           type: integer
-          format: int
         email:
           type: string
         password:
           type: string
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+    UserWithTasks:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
