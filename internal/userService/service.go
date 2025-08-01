@@ -1,14 +1,12 @@
 package userService
 
-import "ModTask/internal/taskService"
-
 type UserService interface {
-	PostService(email, password string) (taskService.User, error)
-	GetAllService() ([]taskService.User, error)
-	GetServiceByID(id int) (taskService.User, error)
-	UpdateService(id int, email, password string) (taskService.User, error)
+	PostService(email, password string) (User, error)
+	GetAllService() ([]User, error)
+	GetServiceByID(id int) (User, error)
+	UpdateService(id int, email, password string) (User, error)
 	DeleteService(id int) error
-	GetAllUsersIdService(userID int) (*taskService.User, error)
+	GetAllUsersIdService(userID int) (*User, error)
 }
 
 type usersService struct {
@@ -19,23 +17,23 @@ func NewUserService(r UserRepository) UserService {
 	return &usersService{repo: r}
 }
 
-func (s *usersService) PostService(email, password string) (taskService.User, error) {
-	newUser := taskService.User{Email: email, Password: password}
+func (s *usersService) PostService(email, password string) (User, error) {
+	newUser := User{Email: email, Password: password}
 	return s.repo.PostRepository(newUser)
 }
 
-func (s *usersService) GetAllService() ([]taskService.User, error) {
+func (s *usersService) GetAllService() ([]User, error) {
 	return s.repo.GetAllRepository()
 }
 
-func (s *usersService) GetServiceByID(id int) (taskService.User, error) {
+func (s *usersService) GetServiceByID(id int) (User, error) {
 	return s.repo.GetRepositoryID(id)
 }
 
-func (s *usersService) UpdateService(id int, email, password string) (taskService.User, error) {
+func (s *usersService) UpdateService(id int, email, password string) (User, error) {
 	users, err := s.repo.GetRepositoryID(id)
 	if err != nil {
-		return taskService.User{}, err
+		return User{}, err
 	}
 
 	if email != "" {
@@ -48,7 +46,7 @@ func (s *usersService) UpdateService(id int, email, password string) (taskServic
 
 	update, err := s.repo.UpdateRepository(users)
 	if err != nil {
-		return taskService.User{}, err
+		return User{}, err
 	}
 	return update, nil
 }
@@ -57,7 +55,7 @@ func (s *usersService) DeleteService(id int) error {
 	return s.repo.DeleteRepository(id)
 }
 
-func (s *usersService) GetAllUsersIdService(userID int) (*taskService.User, error) {
+func (s *usersService) GetAllUsersIdService(userID int) (*User, error) {
 	user, err := s.repo.GetTasksForUser(userID)
 	if err != nil {
 		return nil, err

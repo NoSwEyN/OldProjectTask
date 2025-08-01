@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"ModTask/internal/taskService"
 	"ModTask/internal/userService"
 	"ModTask/internal/web/users"
 	"context"
@@ -31,7 +30,7 @@ func (h *UserHandlers) PostUsers(_ context.Context, request users.PostUsersReque
 		return nil, fmt.Errorf("password is required")
 	}
 
-	userToCreate := taskService.User{
+	userToCreate := userService.User{
 		Email:    *usersRequest.Email,
 		Password: *usersRequest.Password,
 	}
